@@ -15,10 +15,10 @@ def main():
         hotels_list = []
 
         while True:
-            # Wait for hotel cards to load
+            
             page.wait_for_selector('//div[@data-testid="property-card"]')
             
-            # Get all hotel cards on the current page
+       
             hotels = page.locator('//div[@data-testid="property-card"]').all()
             print(f'There are {len(hotels)} hotels on the current page.')
             
@@ -27,7 +27,7 @@ def main():
                 hotel_dict['name'] = hotel.locator('//div[@data-testid="title"]').inner_text()
                 
                 price_text = hotel.locator('//span[@data-testid="price-and-discounted-price"]').inner_text()
-                hotel_dict['price'] = price_text  # Directly use the extracted text
+                hotel_dict['price'] = price_text  
                 
                 hotel_dict['score'] = hotel.locator('//div[@data-testid="review-score"]/div[1]').inner_text()
                 hotel_dict['Avg reviews'] = hotel.locator('//div[@data-testid="review-score"]/div[2]/div[1]').inner_text()
@@ -35,18 +35,18 @@ def main():
 
                 hotels_list.append(hotel_dict)
 
-            # Check if the "Load More" button is present
+       
             load_more_button = page.locator('//button[contains(@class, "bf33709ee1") and contains(@class, "a190bb5f27") and contains(@class, "b9d0a689f2") and contains(@class, "bb5314095f") and contains(@class, "b81c794d25") and contains(@class, "da4da790cd") and span[text()="Load more results"]]')
             if load_more_button.is_visible():
                 load_more_button.click()
-                page.wait_for_timeout(5000)  # Wait for the new results to load
+                page.wait_for_timeout(5000)  
             else:
                 break
         
-        # Create a DataFrame and save it to a CSV and Excel file
+       
         df = pd.DataFrame(hotels_list)
         df.to_excel('hotels_list.xlsx', index=False)
-        df.to_csv('hotels_list.csv', index=False, encoding='utf-8')  # Ensure the CSV is saved with UTF-8 encoding
+        df.to_csv('hotels_list.csv', index=False, encoding='utf-8')  
         
         browser.close()
 
